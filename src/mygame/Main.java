@@ -27,6 +27,7 @@ public class Main extends SimpleApplication
         Main app = new Main();
         Settings sys = new Settings();
         app.setSettings(sys.get_settings());
+        app.setPauseOnLostFocus(true);
         app.start();
     }
 

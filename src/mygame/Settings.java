@@ -1,16 +1,9 @@
 
 package mygame;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.system.AppSettings;
-import com.jme3.texture.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -26,45 +19,34 @@ public final class Settings {
         set_default_settings();
     }
     
-    /** default impostazioni
-     
+    /**
+     * impostazioni di default
     */
     public void set_default_settings(){
-        //audio_settings();
-        /*
-        try {
-            
-            system.setIcons(new BufferedImage[]{
-             ImageIO.read(getClass().getResourceAsStream("Interface/game_icon.bmp")),
-             /*ImageIO.read(getClass().getResourceAsStream("/res/misc/icon128.png")),
-             ImageIO.read(getClass().getResourceAsStream("/res/misc/icon32.png")),
-             ImageIO.read(getClass().getResourceAsStream("/res/misc/icon16.png"))
-                });
-        }
-        catch (IOException e) {
-            System.out.println(e);
-        }*/
-        
-        
-        
-        
+       
         set_icon_image();
         Title = "Alien Warfare";
         system.setTitle(Title);
         system.setUseInput(true);
         system.setFrameRate(300);
+        system.setStereo3D(false);
+        system.setSamples(8);
     }
-    private static void audio_settings(){
-            system.setStereo3D(true);
-    }
+    /**
+     * imposta la risoluzione dello schermo
+     * N.B: resettare l'applicazione dopo aver impostato questa opzione
+    */
     public void set_resolution(int width, int height ){
         system.setResolution(width, height);
     }
+    
+    /**
+     * Restituisce le impostazioni
+    */
     AppSettings get_settings(){
         return system;
     }
     private void set_icon_image(){
-       
         try {
             system.setIcons(new BufferedImage[]{
                     ImageIO.read(getClass().getResourceAsStream("/Interface/game_icon256.bmp")),
@@ -75,6 +57,5 @@ public final class Settings {
         } catch (IOException e) {
             System.out.println(e);
         }
-
     }
 }
