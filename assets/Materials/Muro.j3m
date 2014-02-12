@@ -1,0 +1,13 @@
+Material Muro : Common/MatDefs/Misc/Unshaded.j3md {
+     MaterialParameters {
+        ColorMap : Textures/SeamlessBrick10.JPG
+        Color : 0.6 0.6 0.6 1.0
+        GlowColor : 1.0 1.0 1.0 1.0
+        VertexColor : false
+        SeparateTexCoord : false
+        HardwareShadows : false
+        ShadowMapSize : 0.0
+     }
+    AdditionalRenderState {
+    }
+}

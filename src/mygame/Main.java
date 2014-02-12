@@ -1,9 +1,11 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -13,7 +15,8 @@ import com.jme3.texture.Texture;
 
 
 public class Main extends SimpleApplication 
-{
+{   
+    
     Spaceship spaceship;
     Wall walls[]=new Wall[4];
     
@@ -26,6 +29,7 @@ public class Main extends SimpleApplication
     @Override
     public void simpleInitApp() 
     {
+            
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
       inizialize_spaceship(0.0f,0.0f,0.0f);
@@ -49,7 +53,7 @@ public class Main extends SimpleApplication
     
     void inizialize_spaceship(float x,float y,float z)
     {
-        spaceship=new Spaceship();
+        spaceship=new Spaceship(assetManager);
         spaceship.model=assetManager.loadModel("Models/cubo_base/cubo.j3o");
         spaceship.mat=new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
         spaceship.mat.setColor("Color", ColorRGBA.Blue);
@@ -95,13 +99,22 @@ public class Main extends SimpleApplication
     {
       for(int ite=0; ite<6; ite++)
       {
-        walls[num_wall]=new Wall();
+        walls[num_wall]=new mygame.Wall(assetManager);
+        //modificato per poter creare piu file e rendere il codice poi leggibile 
+        //Ora: 12:49 Data: 12/02/2014
+        
         walls[num_wall].models[ite]=assetManager.loadModel("Models/cubo_base/cubo.j3o");
-        walls[num_wall].mat=new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
-        walls[num_wall].mat.setColor("Color", ColorRGBA.Green);
+        //materiale messo a commento perchè inizializzato nella classe
+        //Ora: 12:49 Data: 12/02/2014
+        
+        //walls[num_wall].mat=new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
+        //walls[num_wall].mat.setColor("Color", ColorRGBA.Green);
+        
         //walls[num_wall].texture=assetManager.loadTexture("percorso");
         //walls[num_wall].mat.setTexture("textship", walls[num_wall].texture);
-        walls[num_wall].models[ite].setMaterial(spaceship.mat);
+        
+        walls[num_wall].models[ite].setMaterial(walls[num_wall].mat);
+        
         switch(ite)
         {
             case 0: { walls[num_wall].models[ite].setLocalTranslation(0.0f-6*num_wall,0.0f,1.0f); } break;
@@ -116,9 +129,14 @@ public class Main extends SimpleApplication
        num_wall++;
        if(num_wall<4) { init_walls(num_wall); }
     }
-    
+    private void init_light(){
+            /** A white ambient light source. */ 
+            AmbientLight ambient = new AmbientLight();
+            ambient.setColor(ColorRGBA.White);
+            rootNode.addLight(ambient); 
+    }
 };
-
+/*/
 class Spaceship
 {
   Spatial model;
@@ -132,14 +150,16 @@ class Spaceship
      alive=true;
   }
 };
-
-class Wall
+*/
+/*class Wall
 {
    Spatial models[];
    Material mat;
-   Texture texture;
+   Texture texture; 
    Wall()
    {
+       
       models=new Spatial[6]; 
+      
    }
-};
+};*/
