@@ -27,12 +27,9 @@ public class Wall{
       assetmanager = man; 
       models=new Spatial[6]; 
       texture = assetmanager.loadTexture("Textures/SeamlessBrick10.JPG");
-      mat = new Material(assetmanager, "Common/MatDefs/Misc/Unshaded.j3md");
+      mat = new Material(assetmanager, "Common/MatDefs/Misc/ColoredTextured.j3md");
       mat.setTexture("ColorMap" ,texture);
-      
-      mat.setColor("Color", new ColorRGBA(0.6f,0.6f,0.6f,1.0f));
-      mat.setTransparent(false);
-      
+      //mat.setColor("Color", new ColorRGBA(0.6f,0.6f,0.6f,1.0f));
    }
  
 }

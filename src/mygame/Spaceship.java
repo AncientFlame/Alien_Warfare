@@ -23,6 +23,9 @@ public class Spaceship {
     Spaceship(AssetManager man)
     {
        assetmanager = man; 
+       //model=assetmanager.loadModel("");
+       
+       
        vel=0.01f; 
        alive=true;
        

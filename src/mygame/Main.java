@@ -22,7 +22,9 @@ public class Main extends SimpleApplication
     
     public static void main(String[] args)
     {
+        Settings sys = new Settings();
         Main app = new Main();
+        app.setSettings(sys.get_settings());
         app.start();
     }
 
@@ -32,6 +34,7 @@ public class Main extends SimpleApplication
             
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
+     
       inizialize_spaceship(0.0f,0.0f,0.0f);
       init_walls(0);
       initKeys();
@@ -96,23 +99,14 @@ public class Main extends SimpleApplication
     }
 
     private void init_walls(int num_wall)
-    {
+    {   
+      walls[num_wall]=new mygame.Wall(assetManager);
       for(int ite=0; ite<6; ite++)
       {
-        walls[num_wall]=new mygame.Wall(assetManager);
-        //modificato per poter creare piu file e rendere il codice poi leggibile 
-        //Ora: 12:49 Data: 12/02/2014
+        
         
         walls[num_wall].models[ite]=assetManager.loadModel("Models/cubo_base/cubo.j3o");
-        //materiale messo a commento perchè inizializzato nella classe
-        //Ora: 12:49 Data: 12/02/2014
-        
-        //walls[num_wall].mat=new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
-        //walls[num_wall].mat.setColor("Color", ColorRGBA.Green);
-        
-        //walls[num_wall].texture=assetManager.loadTexture("percorso");
-        //walls[num_wall].mat.setTexture("textship", walls[num_wall].texture);
-        
+        walls[num_wall].texture.setAnisotropicFilter(8);
         walls[num_wall].models[ite].setMaterial(walls[num_wall].mat);
         
         switch(ite)
@@ -136,30 +130,4 @@ public class Main extends SimpleApplication
             rootNode.addLight(ambient); 
     }
 };
-/*/
-class Spaceship
-{
-  Spatial model;
-  Material mat;
-  Texture texture;
-  boolean alive;
-  float vel;
-  Spaceship()
-  {
-     vel=0.01f; 
-     alive=true;
-  }
-};
-*/
-/*class Wall
-{
-   Spatial models[];
-   Material mat;
-   Texture texture; 
-   Wall()
-   {
-       
-      models=new Spatial[6]; 
-      
-   }
-};*/
+
