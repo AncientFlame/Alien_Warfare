@@ -12,6 +12,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
+import org.lwjgl.opengl.Display;
 
 
 public class Main extends SimpleApplication 
@@ -22,8 +23,9 @@ public class Main extends SimpleApplication
     
     public static void main(String[] args)
     {
-        Settings sys = new Settings();
+        
         Main app = new Main();
+        Settings sys = new Settings();
         app.setSettings(sys.get_settings());
         app.start();
     }
