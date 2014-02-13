@@ -89,12 +89,14 @@ public class Main extends SimpleApplication
              if(name.equals("D"))
              {
                Vector3f v = spaceship.model.getLocalTranslation();
-               spaceship.model.setLocalTranslation(v.x-spaceship.vel, v.y, v.z);
+               if(v.x-spaceship.vel>-23)
+                spaceship.model.setLocalTranslation(v.x-spaceship.vel, v.y, v.z);
              }
              if(name.equals("A")) 
              {
                Vector3f v =  spaceship.model.getLocalTranslation();
-               spaceship.model.setLocalTranslation(v.x+spaceship.vel, v.y,v.z);
+               if(v.x+spaceship.vel<3)
+                spaceship.model.setLocalTranslation(v.x+spaceship.vel, v.y,v.z);
              }
              
       }
