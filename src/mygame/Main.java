@@ -14,6 +14,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
+import com.jme3.util.SkyFactory;
 import org.lwjgl.opengl.Display;
 
 
@@ -39,10 +40,12 @@ public class Main extends SimpleApplication
             
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
-     
+      
       inizialize_spaceship(0.0f,0.0f,0.0f);
       init_walls(0);
       initKeys();
+      init_light();
+      init_sky();
     }
 
     @Override
@@ -135,7 +138,9 @@ public class Main extends SimpleApplication
             ambient.setColor(ColorRGBA.White);
             rootNode.addLight(ambient); 
     }
-    
-    
+    private void init_sky(){
+            rootNode.attachChild(SkyFactory.createSky(
+                assetManager, "Textures/Skysphere.jpg", true));
+    }
 };
 
