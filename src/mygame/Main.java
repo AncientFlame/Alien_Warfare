@@ -2,6 +2,8 @@ package mygame;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -17,7 +19,7 @@ import org.lwjgl.opengl.Display;
 
 public class Main extends SimpleApplication 
 {   
-    
+     
     Spaceship spaceship;
     Wall walls[]=new Wall[4];
     
@@ -91,6 +93,7 @@ public class Main extends SimpleApplication
                Vector3f v =  spaceship.model.getLocalTranslation();
                spaceship.model.setLocalTranslation(v.x+spaceship.vel, v.y,v.z);
              }
+             
       }
     };
     
@@ -132,5 +135,7 @@ public class Main extends SimpleApplication
             ambient.setColor(ColorRGBA.White);
             rootNode.addLight(ambient); 
     }
+    
+    
 };
 
