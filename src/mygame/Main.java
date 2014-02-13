@@ -112,8 +112,6 @@ public class Main extends SimpleApplication
       walls[num_wall]=new mygame.Wall(assetManager);
       for(int ite=0; ite<6; ite++)
       {
-        
-        
         walls[num_wall].models[ite]=assetManager.loadModel("Models/cubo_base/cubo.j3o");
         walls[num_wall].texture.setAnisotropicFilter(8);
         walls[num_wall].models[ite].setMaterial(walls[num_wall].mat);
