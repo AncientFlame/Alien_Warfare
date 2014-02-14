@@ -16,7 +16,8 @@ public class Mob
     
     Mob(AssetManager man)
     {
-       model=man.loadModel("Models/cubo_base/cubo.j3o");
+       model=man.loadModel("Models/Mob/mob.j3o");
+       model.setLocalScale(0.4f,0.4f,0.4f);
        mat=new Material(man,"Common/MatDefs/Misc/Unshaded.j3md");
        mat.setColor("Color", ColorRGBA.Red);
         //texture=man.loadTexture("percorso");
@@ -27,7 +28,7 @@ public class Mob
     float motion(float vel,float zeta)
     {
         Vector3f app=model.getLocalTranslation();
-        if(app.x+vel<-23 || app.x+vel>3) //se sbatte contro il muro inverte la direzione
+        if(app.x+vel<-25 || app.x+vel>5) //se sbatte contro il muro inverte la direzione
         {
            vel*=-1;
         }

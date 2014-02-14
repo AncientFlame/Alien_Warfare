@@ -152,7 +152,7 @@ public class Main extends SimpleApplication
         for(int colonna=0; colonna<5; colonna++) 
         { 
            m[linea][colonna]=new mygame.Mob(assetManager);
-           m[linea][colonna].model.setLocalTranslation(0+(-2*linea),0,24+(3*colonna)); 
+           m[linea][colonna].model.setLocalTranslation(0+(-2.5f*linea),0,24+(3*colonna)); 
            /* 24: distanza su z minima dove creare mob
             aumentando 24 aumenta distanza, 0: serve a centrare la matrice di mob 
             (aumentandolo si sposta verso sx,diminuendo dx)*/
