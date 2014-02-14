@@ -23,6 +23,7 @@ public class Main extends SimpleApplication
      
     Spaceship spaceship;
     Wall walls[]=new Wall[4];
+    Mob m[][]=new Mob[5][11];
     
     public static void main(String[] args)
     {
@@ -41,11 +42,12 @@ public class Main extends SimpleApplication
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
       
-      inizialize_spaceship(0.0f,0.0f,0.0f);
+      inizialize_spaceship(-10.0f,0.0f,0.0f);
       init_walls(0);
       initKeys();
       init_light();
       init_sky();
+      init_aliens();
     }
 
     @Override
@@ -65,12 +67,6 @@ public class Main extends SimpleApplication
     void inizialize_spaceship(float x,float y,float z)
     {
         spaceship=new Spaceship(assetManager);
-        spaceship.model=assetManager.loadModel("Models/cubo_base/cubo.j3o");
-        spaceship.mat=new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
-        spaceship.mat.setColor("Color", ColorRGBA.Blue);
-        //spaceship.texture=assetManager.loadTexture("percorso");
-        //spaceship.mat.setTexture("textship", spaceship.texture);
-        spaceship.model.setMaterial(spaceship.mat);
         spaceship.model.setLocalTranslation(x,y,z);
         rootNode.attachChild(spaceship.model);
     }
@@ -132,15 +128,34 @@ public class Main extends SimpleApplication
        num_wall++;
        if(num_wall<4) { init_walls(num_wall); }
     }
-    private void init_light(){
+    
+    private void init_light()
+    {
             /** A white ambient light source. */ 
             AmbientLight ambient = new AmbientLight();
             ambient.setColor(ColorRGBA.White);
             rootNode.addLight(ambient); 
     }
-    private void init_sky(){
+    private void init_sky()
+    {
             rootNode.attachChild(SkyFactory.createSky(
                 assetManager, "Textures/Skysphere.jpg", true));
+    }
+    
+    private void init_aliens()
+    {
+      for(int linea=0; linea<5; linea++) 
+      {
+        for(int colonna=0; colonna<11; colonna++) 
+        { 
+           m[linea][colonna]=new mygame.Mob(assetManager);
+           m[linea][colonna].model.setLocalTranslation(2+(-6*linea),0,24+(6*colonna)); 
+           /* 24: distanza su z minima dove creare mob
+            aumentando 24 aumenta distanza, 2: serve a centrare la matrice di mob 
+            (aumentandolo si sposta verso sx,diminuendo dx)*/
+           rootNode.attachChild(m[linea][colonna].model);
+        }
+      }
     }
 };
 
