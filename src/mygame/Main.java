@@ -23,7 +23,8 @@ public class Main extends SimpleApplication
      
     Spaceship spaceship;
     Wall walls[]=new Wall[4];
-    Mob m[][]=new Mob[5][11];
+    Mob m[][]=new Mob[11][5];
+    float mob_vel,zeta_mob=24;
     
     public static void main(String[] args)
     {
@@ -54,6 +55,7 @@ public class Main extends SimpleApplication
     public void simpleUpdate(float tpf) 
     {
        set_camera();
+       move_aliens();
        listener.setLocation(cam.getLocation());
        listener.setRotation(cam.getRotation());
     }
@@ -144,18 +146,37 @@ public class Main extends SimpleApplication
     
     private void init_aliens()
     {
-      for(int linea=0; linea<5; linea++) 
+      mob_vel=-0.005f;
+      for(int linea=0; linea<11; linea++) 
       {
-        for(int colonna=0; colonna<11; colonna++) 
+        for(int colonna=0; colonna<5; colonna++) 
         { 
            m[linea][colonna]=new mygame.Mob(assetManager);
-           m[linea][colonna].model.setLocalTranslation(2+(-6*linea),0,24+(6*colonna)); 
+           m[linea][colonna].model.setLocalTranslation(0+(-2*linea),0,24+(3*colonna)); 
            /* 24: distanza su z minima dove creare mob
-            aumentando 24 aumenta distanza, 2: serve a centrare la matrice di mob 
+            aumentando 24 aumenta distanza, 0: serve a centrare la matrice di mob 
             (aumentandolo si sposta verso sx,diminuendo dx)*/
            rootNode.attachChild(m[linea][colonna].model);
         }
       }
+    }
+    
+    private void move_aliens()
+    {
+      float vel_app;
+       for(int i=0; i<11; i++)
+       {
+          for(int j=0; j<5; j++)
+          {
+            if(m[i][j].alive==true)
+            {
+              vel_app=mob_vel;
+              mob_vel=m[i][j].motion(mob_vel,zeta_mob+(6*j));
+              if(vel_app!=mob_vel) //sbattuto contro il muro
+                 zeta_mob-=1;
+            }
+          }
+       }
     }
 };
 
