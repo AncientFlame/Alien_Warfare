@@ -22,13 +22,13 @@ public class Main extends SimpleApplication
 {   
      
     Spaceship spaceship;
+    Bullet bulletofship;
     Wall walls[]=new Wall[4];
     Mob m[][]=new Mob[11][5];
     float mob_vel,zeta_mob=24;
     
     public static void main(String[] args)
     {
-        
         Main app = new Main();
         Settings sys = new Settings();
         app.setSettings(sys.get_settings());
@@ -43,6 +43,7 @@ public class Main extends SimpleApplication
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
       
+      bulletofship=new Bullet(assetManager);
       inizialize_spaceship(-10.0f,0.0f,0.0f);
       init_walls(0);
       initKeys();
@@ -56,6 +57,7 @@ public class Main extends SimpleApplication
     {
        set_camera();
        move_aliens();
+       bulletofship.fire=fire();
        listener.setLocation(cam.getLocation());
        listener.setRotation(cam.getRotation());
     }
@@ -77,7 +79,8 @@ public class Main extends SimpleApplication
     {
       inputManager.addMapping("A", new KeyTrigger( KeyInput.KEY_A));
       inputManager.addMapping("D", new KeyTrigger( KeyInput.KEY_D));
-      inputManager.addListener(spaceship_keys,"A","D");
+      inputManager.addMapping("fire", new KeyTrigger(KeyInput.KEY_SPACE));
+      inputManager.addListener(spaceship_keys,"A","D","fire");
     }
     
     private AnalogListener spaceship_keys = new AnalogListener() 
@@ -96,7 +99,14 @@ public class Main extends SimpleApplication
                if(v.x+spaceship.vel<3)
                 spaceship.model.setLocalTranslation(v.x+spaceship.vel, v.y,v.z);
              }
-             
+             if(name.equals("fire"))
+             {
+                if(bulletofship.fire==false) 
+                {
+                  bulletofship.fire=true;
+                  rootNode.attachChild(bulletofship.model);
+                } 
+             }
       }
     };
     
@@ -146,7 +156,8 @@ public class Main extends SimpleApplication
     
     private void init_aliens()
     {
-      mob_vel=-0.005f;
+      //mob_vel=-0.005f;
+        mob_vel=-0.01f;
       for(int linea=0; linea<11; linea++) 
       {
         for(int colonna=0; colonna<5; colonna++) 
@@ -177,6 +188,14 @@ public class Main extends SimpleApplication
             }
           }
        }
+    }
+    private boolean fire()
+    {
+      if(bulletofship.fire==true)
+      {
+        if(bulletofship.move()==false) { rootNode.detachChild(bulletofship.model); return false; } else return true;
+      } else bulletofship.go_to_spaceship(spaceship);
+      return false;
     }
 };
 

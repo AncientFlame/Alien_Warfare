@@ -15,7 +15,7 @@ public class Wall{
    
    Wall(AssetManager man)
    {
-          models=new Spatial[6]; 
+      models=new Spatial[6]; 
       texture = man.loadTexture("Textures/SeamlessBrick10.JPG");
       mat = new Material(man, "Common/MatDefs/Misc/Unshaded.j3md");
       mat.setTexture("ColorMap" ,texture);

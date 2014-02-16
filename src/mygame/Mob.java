@@ -32,7 +32,7 @@ public class Mob
         {
            vel*=-1;
         }
-         model.setLocalTranslation(app.x+vel,0,zeta);
+         model.setLocalTranslation(app.x+vel,-0.6f,zeta);
          return vel;
     }
 };
