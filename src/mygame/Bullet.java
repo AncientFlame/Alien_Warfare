@@ -3,6 +3,8 @@ package mygame;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
@@ -17,8 +19,7 @@ public class Bullet
     
     Bullet(AssetManager man)
     {
-       model=man.loadModel("Models/cubo_base/cubo.j3o");
-       model.setLocalScale(0.4f,0.4f,0.4f);
+       model=man.loadModel("Models/bullet/bullet.j3o");
        mat=new Material(man,"Common/MatDefs/Misc/Unshaded.j3md");
        mat.setColor("Color", ColorRGBA.Yellow);
         //texture=man.loadTexture("percorso");

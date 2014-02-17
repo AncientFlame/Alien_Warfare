@@ -18,8 +18,8 @@ public class Wall{
       models=new Spatial[6]; 
       texture = man.loadTexture("Textures/SeamlessBrick10.JPG");
       mat = new Material(man, "Common/MatDefs/Misc/Unshaded.j3md");
-      mat.setTexture("ColorMap" ,texture);
-      mat.setColor("Color", ColorRGBA.Green);
+      mat.setTexture("ColorMap" , texture);
+      //mat.setColor("Color", ColorRGBA.Green);
    }
  
 }
