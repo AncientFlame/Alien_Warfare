@@ -21,7 +21,7 @@ public class Wall{
       texture = man.loadTexture("Textures/SeamlessBrick10.JPG");
       mat = new Material(man, "Common/MatDefs/Misc/Unshaded.j3md");
       mat.setTexture("ColorMap" , texture);
-      //mat.setColor("Color", ColorRGBA.Green);
+      mat.setColor("Color", ColorRGBA.Green);
    }
  
 }
