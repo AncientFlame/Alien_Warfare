@@ -1,6 +1,7 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -11,12 +12,11 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.util.SkyFactory;
-import java.util.concurrent.Callable;
 
 
 public class Main extends SimpleApplication 
 {   
-     
+    AudioNode shot; 
     Spaceship spaceship;
     Bullet bulletofship;
     Wall walls[]=new Wall[4];
@@ -46,6 +46,7 @@ public class Main extends SimpleApplication
       inizialize_spaceship(-10.0f,0.0f,-3f);
       init_walls(0);
       initKeys();
+      init_audio();
       init_light();
       init_sky();
       init_aliens();
@@ -118,9 +119,11 @@ public class Main extends SimpleApplication
              {
                 if(bulletofship.fire==false) 
                 {
+                  shot.playInstance();  
                   bulletofship.fire=true;
                   rootNode.attachChild(bulletofship.model);
                 } 
+                
              }
       }
     };
@@ -169,7 +172,13 @@ public class Main extends SimpleApplication
             rootNode.attachChild(SkyFactory.createSky(
                 assetManager, "Textures/Skysphere.jpg", true));
     }
-    
+    private void init_audio(){
+        shot = new AudioNode(assetManager, "Sounds/Shot.wav", false);
+        shot.setLooping(false);
+        shot.setVolume(2);
+        shot.setPositional(false);
+        rootNode.attachChild(shot);
+    }
     private void init_aliens()
     {
       //mob_vel=-0.005f;
@@ -201,6 +210,8 @@ public class Main extends SimpleApplication
               mob_vel=m[i][j].motion(mob_vel,zeta_mob+(6*j));
               if(vel_app!=mob_vel) //sbattuto contro il muro
                  zeta_mob-=1;
+              if(zeta_mob+6*j<=2.0f)
+                this.stop();
             }
           }
        }
@@ -209,7 +220,9 @@ public class Main extends SimpleApplication
     {
       if(bulletofship.fire==true)
       {
+        
         if(bulletofship.move()==false) { rootNode.detachChild(bulletofship.model); return false; } else return true;
+        
       } else bulletofship.go_to_spaceship(spaceship);
       return false;
     }
@@ -268,5 +281,8 @@ public class Main extends SimpleApplication
        }
        return false; 
     }
+    
+    
+    
 };
 
