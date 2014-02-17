@@ -256,7 +256,7 @@ public class Main extends SimpleApplication
         }
       }
      }
-    }
+    } 
     private boolean collisions_with_walls(Bullet s1,Spaceship s2)
     {
        if(s1.fire==true)
