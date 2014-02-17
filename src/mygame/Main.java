@@ -32,6 +32,9 @@ public class Main extends SimpleApplication
         Settings sys = new Settings();
         app.setSettings(sys.get_settings());
         app.setPauseOnLostFocus(true);
+        app.setDisplayFps(false);
+        app.setDisplayStatView(false);
+        
         app.start();
     }
 
