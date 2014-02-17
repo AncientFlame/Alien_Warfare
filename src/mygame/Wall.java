@@ -10,12 +10,14 @@ import com.jme3.texture.Texture;
 
 public class Wall{
    Spatial models[];
+   boolean broken[];
    Material mat;
    Texture texture; 
    
    Wall(AssetManager man)
    {
       models=new Spatial[6]; 
+      broken=new boolean[6];
       texture = man.loadTexture("Textures/SeamlessBrick10.JPG");
       mat = new Material(man, "Common/MatDefs/Misc/Unshaded.j3md");
       mat.setTexture("ColorMap" , texture);

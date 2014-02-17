@@ -53,7 +53,7 @@ public class Main extends SimpleApplication
        set_camera();
        move_aliens();
        bulletofship.fire=fire();
-       collisions_with_aliens(bulletofship,spaceship);
+       if(collisions_with_walls(bulletofship,spaceship)==false) collisions_with_aliens(bulletofship,spaceship);
        listener.setLocation(cam.getLocation());
        listener.setRotation(cam.getRotation());
     }
@@ -119,6 +119,7 @@ public class Main extends SimpleApplication
       for(int ite=0; ite<6; ite++)
       {
         walls[num_wall].models[ite]=assetManager.loadModel("Models/cubo_base/cubo.j3o");
+        walls[num_wall].broken[ite]=false;
         walls[num_wall].texture.setAnisotropicFilter(8);
         walls[num_wall].models[ite].setMaterial(walls[num_wall].mat);
         
@@ -220,6 +221,33 @@ public class Main extends SimpleApplication
         }
       }
      }
+    }
+    private boolean collisions_with_walls(Bullet s1,Spaceship s2)
+    {
+       if(s1.fire==true)
+       {
+          for(int i=0; i<4; i++)
+          {
+             for(int j=0; j<6; j++)
+             {
+               if(walls[i].broken[j]==false)
+               {
+                collision=new CollisionResults();
+                s1.model.collideWith(walls[i].models[j].getWorldBound(), collision);
+                if(collision.size()>0)
+                {
+                   walls[i].broken[j]=true;
+                   rootNode.detachChild(walls[i].models[j]);
+                   bulletofship.fire=false;
+                   rootNode.detachChild(s1.model);
+                   s1.go_to_spaceship(s2); i=5; j=7;
+                   return true;
+                }
+               }
+             }
+          }
+       }
+       return false; 
     }
 };
 
