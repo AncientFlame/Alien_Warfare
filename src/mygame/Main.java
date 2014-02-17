@@ -11,7 +11,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.util.SkyFactory;
-import java.util.concurrent.Callable;
 
 
 public class Main extends SimpleApplication 
@@ -201,6 +200,8 @@ public class Main extends SimpleApplication
               mob_vel=m[i][j].motion(mob_vel,zeta_mob+(6*j));
               if(vel_app!=mob_vel) //sbattuto contro il muro
                  zeta_mob-=1;
+              if(zeta_mob+6*j<=2.0f)
+                this.stop();
             }
           }
        }
