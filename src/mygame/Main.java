@@ -1,21 +1,15 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
-import com.jme3.effect.ParticleEmitter;
-import com.jme3.effect.ParticleMesh;
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.jme3.scene.Spatial;
-import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
-import org.lwjgl.opengl.Display;
 
 
 public class Main extends SimpleApplication 
@@ -26,7 +20,8 @@ public class Main extends SimpleApplication
     Wall walls[]=new Wall[4];
     Mob m[][]=new Mob[11][5];
     float mob_vel,zeta_mob=24;
-    
+    CollisionResults collision;
+
     public static void main(String[] args)
     {
         Main app = new Main();
@@ -58,6 +53,7 @@ public class Main extends SimpleApplication
        set_camera();
        move_aliens();
        bulletofship.fire=fire();
+       collisions_with_aliens(bulletofship,spaceship);
        listener.setLocation(cam.getLocation());
        listener.setRotation(cam.getRotation());
     }
@@ -196,6 +192,34 @@ public class Main extends SimpleApplication
         if(bulletofship.move()==false) { rootNode.detachChild(bulletofship.model); return false; } else return true;
       } else bulletofship.go_to_spaceship(spaceship);
       return false;
+    }
+    
+    private void collisions_with_aliens(Bullet s1,Spaceship s2)
+    {
+     if(s1.fire==true)
+     {
+      for(int i=0; i<11; i++)
+      {
+        for(int j=0; j<5; j++)
+        {
+          if(m[i][j].alive==true) //mob ancora vivo e proiettile sparato
+          { 
+            collision=new CollisionResults();
+            s1.model.collideWith(m[i][j].model.getWorldBound(),collision);
+            if(collision.size()>0) //se è entrato in collisione
+            {
+               m[i][j].alive=false;
+               rootNode.detachChild(m[i][j].model);
+               bulletofship.fire=false;
+               rootNode.detachChild(s1.model);
+               s1.go_to_spaceship(s2);
+               i=12;
+               j=6;
+            }
+          }
+        }
+      }
+     }
     }
 };
 

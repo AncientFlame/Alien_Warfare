@@ -36,7 +36,7 @@ public class Bullet
     {
        Vector3f v=model.getLocalTranslation();
        model.setLocalTranslation(v.x,v.y,v.z+vel);
-       if(v.z>30) //30 = dopo ultima linea di mob all'inizio del gioco
+       if(v.z>40) //40 = dopo ultima linea di mob all'inizio del gioco
          return false;
        return true;
     }
