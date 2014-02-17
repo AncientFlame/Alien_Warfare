@@ -14,7 +14,8 @@ public class Spaceship {
     float vel;
     Spaceship(AssetManager man)
     {
-       model=man.loadModel("Models/cubo_base/cubo.j3o");
+       model=man.loadModel("Models/spaceship/spaceship.j3o");
+       model.setLocalScale(0.3f,0.3f,0.3f);
        mat=new Material(man,"Common/MatDefs/Misc/Unshaded.j3md");
        mat.setColor("Color", ColorRGBA.Blue);
         //texture=man.loadTexture("percorso");

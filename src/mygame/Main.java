@@ -3,6 +3,7 @@ package mygame;
 import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
@@ -10,6 +11,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.util.SkyFactory;
+import java.util.concurrent.Callable;
 
 
 public class Main extends SimpleApplication 
@@ -21,6 +23,8 @@ public class Main extends SimpleApplication
     Mob m[][]=new Mob[11][5];
     float mob_vel,zeta_mob=24;
     CollisionResults collision;
+    boolean first_person=false;
+    boolean pressed=false;
 
     public static void main(String[] args)
     {
@@ -39,7 +43,7 @@ public class Main extends SimpleApplication
       flyCam.setEnabled(false);
       
       bulletofship=new Bullet(assetManager);
-      inizialize_spaceship(-10.0f,0.0f,0.0f);
+      inizialize_spaceship(-10.0f,0.0f,-3f);
       init_walls(0);
       initKeys();
       init_light();
@@ -76,9 +80,24 @@ public class Main extends SimpleApplication
       inputManager.addMapping("A", new KeyTrigger( KeyInput.KEY_A));
       inputManager.addMapping("D", new KeyTrigger( KeyInput.KEY_D));
       inputManager.addMapping("fire", new KeyTrigger(KeyInput.KEY_SPACE));
+      inputManager.addMapping("visuale",new KeyTrigger(KeyInput.KEY_T));
       inputManager.addListener(spaceship_keys,"A","D","fire");
+      inputManager.addListener(camera_keys,"visuale");
     }
-    
+    private ActionListener camera_keys=new ActionListener()
+    {
+        public void onAction(String name, boolean isPressed, float tpf) 
+        {
+             if(name.equals("visuale") && !isPressed)
+             {
+               if(pressed==false)
+               {
+                first_person=!first_person; 
+                pressed=true;
+               }
+             } else pressed=false;  
+        }
+    };
     private AnalogListener spaceship_keys = new AnalogListener() 
     {
        public void onAnalog(String name, float value, float tpf) 
@@ -86,13 +105,13 @@ public class Main extends SimpleApplication
              if(name.equals("D"))
              {
                Vector3f v = spaceship.model.getLocalTranslation();
-               if(v.x-spaceship.vel>-23)
+               if(v.x-spaceship.vel>-25)
                 spaceship.model.setLocalTranslation(v.x-spaceship.vel, v.y, v.z);
              }
              if(name.equals("A")) 
              {
                Vector3f v =  spaceship.model.getLocalTranslation();
-               if(v.x+spaceship.vel<3)
+               if(v.x+spaceship.vel<5)
                 spaceship.model.setLocalTranslation(v.x+spaceship.vel, v.y,v.z);
              }
              if(name.equals("fire"))
@@ -109,7 +128,7 @@ public class Main extends SimpleApplication
     private void set_camera()
     {
        Vector3f v=spaceship.model.getLocalTranslation();
-       cam.setLocation(new Vector3f(v.x-0.5f,v.y+2,v.z-8));
+       if(first_person==false) cam.setLocation(new Vector3f(v.x,v.y+2,v.z-6)); else cam.setLocation(new Vector3f(v.x,v.y+1,v.z+0.05f));
        cam.setRotation(spaceship.model.getLocalRotation());
     }
 
@@ -240,7 +259,7 @@ public class Main extends SimpleApplication
                    rootNode.detachChild(walls[i].models[j]);
                    bulletofship.fire=false;
                    rootNode.detachChild(s1.model);
-                   s1.go_to_spaceship(s2); i=5; j=7;
+                   s1.go_to_spaceship(s2); 
                    return true;
                 }
                }
