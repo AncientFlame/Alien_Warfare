@@ -14,8 +14,9 @@ public class Bullet
     Texture texture;
     boolean fire;
     float vel;
+    boolean alien;
     
-    Bullet(AssetManager man)
+    Bullet(AssetManager man,boolean b)
     {
        model=man.loadModel("Models/bullet/bullet.j3o");
        mat=new Material(man,"Common/MatDefs/Misc/Unshaded.j3md");
@@ -24,7 +25,8 @@ public class Bullet
         //mat.setTexture("ColorMap",texture);
        model.setMaterial(mat);
        fire=false;
-       vel=0.08f;
+       alien=b;
+       if(b==false) vel=0.1f; else vel=-0.1f;
     }
     void go_to_spaceship(Spaceship sp)
     {
@@ -34,8 +36,10 @@ public class Bullet
     {
        Vector3f v=model.getLocalTranslation();
        model.setLocalTranslation(v.x,v.y,v.z+vel);
-       if(v.z>40) //40 = dopo ultima linea di mob all'inizio del gioco
-         return false;
+       if( (v.z>40 && alien==false) || (v.z<-3 && alien==true) ) //40 = dopo ultima linea di mob all'inizio del gioco
+       {
+           return false;
+       }
        return true;
     }
 };
