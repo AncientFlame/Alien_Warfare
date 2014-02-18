@@ -34,7 +34,7 @@ public final class Settings {
         system.setStereo3D(false);
   
         system.setSettingsDialogImage("Interface/SplashScreen.jpg");
-        system.setSamples(8);
+        system.setSamples(0);
     }
     /**
      * imposta la risoluzione dello schermo
