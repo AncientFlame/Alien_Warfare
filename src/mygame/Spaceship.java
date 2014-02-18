@@ -15,8 +15,8 @@ public class Spaceship {
     Spaceship(AssetManager man)
     {
        model=man.loadModel("Models/spaceship/spaceship.j3o");
-       model.setLocalScale(0.3f,0.3f,0.3f);
-       mat=new Material(man,"Common/MatDefs/Misc/Unshaded.j3md");
+       model.setLocalScale(0.4f,0.4f,0.4f);
+       mat=new Material(man ,"Common/MatDefs/Misc/Unshaded.j3md");
        mat.setColor("Color", ColorRGBA.Blue);
         //texture=man.loadTexture("percorso");
         //mat.setTexture("ColorMap",texture);
