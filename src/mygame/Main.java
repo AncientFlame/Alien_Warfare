@@ -76,14 +76,15 @@ public class Main extends SimpleApplication
          if(collisions_with_walls(bulletofship,spaceship)==false) collisions_with_aliens(bulletofship,spaceship);
        }
        if(bullets<3)
-         alien_fire();
+          alien_fire();
        if(bullets>0)
        { 
          for(ii=0; ii<4; ii++)
          {
            if(bulletofaliens[ii].fire==true)  
            {  
-              bulletofaliens[ii].fire=fire(bulletofaliens[ii]);   
+              bulletofaliens[ii].fire=fire(bulletofaliens[ii]);  
+              collisions_with_walls(bulletofaliens[ii],spaceship);
            }
          }
        }
@@ -338,7 +339,8 @@ public class Main extends SimpleApplication
                    rootNode.detachChild(walls[i].models[j]);
                    s1.fire=false;
                    rootNode.detachChild(s1.model);
-                   s1.go_to_spaceship(s2); 
+                   if(s1.alien==false) s1.go_to_spaceship(s2); else bullets--; 
+                   
                    return true;
                 }
                }
@@ -352,7 +354,7 @@ public class Main extends SimpleApplication
     {
       //int indice = (int)(Math.random()*10);
         Random random=new Random();
-        int indice=random.nextInt(10);
+        int indice=random.nextInt(11);
        if(m[x_m[indice]][y_m[indice]].isLast==true)
        {
          for(int i=0; i<4; i++)
