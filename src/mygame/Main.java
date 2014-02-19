@@ -12,7 +12,11 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.util.SkyFactory;
+<<<<<<< HEAD
 
+=======
+import java.util.Random;
+>>>>>>> origin/new
 
 public class Main extends SimpleApplication 
 {   
@@ -21,10 +25,16 @@ public class Main extends SimpleApplication
     Bullet bulletofship;
     Wall walls[]=new Wall[4];
     Mob m[][]=new Mob[11][5];
+    int x_m[]=new int[11];
+    int y_m[]=new int[11];
+    Bullet bulletofaliens[]=new Bullet[4];
+    int bullets=0;
     float mob_vel,zeta_mob=24;
     CollisionResults collision;
     boolean first_person=false;
     boolean pressed=false;
+    int ii;
+
 
     public static void main(String[] args)
     {
@@ -32,6 +42,9 @@ public class Main extends SimpleApplication
         Settings sys = new Settings();
         app.setSettings(sys.get_settings());
         app.setPauseOnLostFocus(true);
+        app.setDisplayFps(false);
+        app.setDisplayStatView(false);
+        
         app.start();
     }
 
@@ -42,7 +55,11 @@ public class Main extends SimpleApplication
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
       
-      bulletofship=new Bullet(assetManager);
+      bulletofship=new Bullet(assetManager,false);
+      bulletofaliens[0]=new Bullet(assetManager,true); 
+      bulletofaliens[1]=new Bullet(assetManager,true); 
+      bulletofaliens[2]=new Bullet(assetManager,true); 
+      bulletofaliens[3]=new Bullet(assetManager,true); 
       inizialize_spaceship(-10.0f,0.0f,-3f);
       init_walls(0);
       initKeys();
@@ -57,8 +74,24 @@ public class Main extends SimpleApplication
     {
        set_camera();
        move_aliens();
-       bulletofship.fire=fire();
-       if(collisions_with_walls(bulletofship,spaceship)==false) collisions_with_aliens(bulletofship,spaceship);
+       bulletofship.fire=fire(bulletofship);
+       if(bulletofship.fire==true)
+       { 
+         if(collisions_with_walls(bulletofship,spaceship)==false) collisions_with_aliens(bulletofship,spaceship);
+       }
+       if(bullets<3)
+         alien_fire();
+       if(bullets>0)
+       { 
+         for(ii=0; ii<4; ii++)
+         {
+           if(bulletofaliens[ii].fire==true)  
+           {  
+              bulletofaliens[ii].fire=fire(bulletofaliens[ii]);   
+           }
+         }
+       }
+       
        listener.setLocation(cam.getLocation());
        listener.setRotation(cam.getRotation());
     }
@@ -188,7 +221,13 @@ public class Main extends SimpleApplication
         for(int colonna=0; colonna<5; colonna++) 
         { 
            m[linea][colonna]=new mygame.Mob(assetManager);
-           m[linea][colonna].model.setLocalTranslation(0+(-2.5f*linea),0,24+(3*colonna)); 
+           if(colonna==0)
+           {
+             m[linea][colonna].isLast=true;
+             x_m[linea]=linea;
+             y_m[linea]=colonna;
+           }
+           m[linea][colonna].model.setLocalTranslation(0+(-2.5f*linea),0,24+(3*colonna));
            /* 24: distanza su z minima dove creare mob
             aumentando 24 aumenta distanza, 0: serve a centrare la matrice di mob 
             (aumentandolo si sposta verso sx,diminuendo dx)*/
@@ -216,21 +255,24 @@ public class Main extends SimpleApplication
           }
        }
     }
-    private boolean fire()
+    private boolean fire(Bullet s1)
     {
-      if(bulletofship.fire==true)
+      if(s1.fire==true)
       {
+<<<<<<< HEAD
         
         if(bulletofship.move()==false) { rootNode.detachChild(bulletofship.model); return false; } else return true;
         
       } else bulletofship.go_to_spaceship(spaceship);
+=======
+        if(s1.move()==false) { rootNode.detachChild(s1.model); if(s1.alien==true) { bullets--; } return false; } else return true;
+      } else s1.go_to_spaceship(spaceship);
+>>>>>>> origin/new
       return false;
     }
     
     private void collisions_with_aliens(Bullet s1,Spaceship s2)
     {
-     if(s1.fire==true)
-     {
       for(int i=0; i<11; i++)
       {
         for(int j=0; j<5; j++)
@@ -242,6 +284,14 @@ public class Main extends SimpleApplication
             if(collision.size()>0) //se è entrato in collisione
             {
                m[i][j].alive=false;
+               if(m[i][j].isLast==true)
+               {   
+                 if(j<4)
+                 {
+                   m[i][j+1].isLast=true;
+                   y_m[i]=j+1;
+                 } else y_m[i]=-1;
+               }
                rootNode.detachChild(m[i][j].model);
                bulletofship.fire=false;
                rootNode.detachChild(s1.model);
@@ -252,11 +302,11 @@ public class Main extends SimpleApplication
           }
         }
       }
-     }
-    }
+    } 
     private boolean collisions_with_walls(Bullet s1,Spaceship s2)
     {
-       if(s1.fire==true)
+       Vector3f v=s1.model.getLocalTranslation();
+       if(v.z<=3.5f)
        {
           for(int i=0; i<4; i++)
           {
@@ -270,7 +320,7 @@ public class Main extends SimpleApplication
                 {
                    walls[i].broken[j]=true;
                    rootNode.detachChild(walls[i].models[j]);
-                   bulletofship.fire=false;
+                   s1.fire=false;
                    rootNode.detachChild(s1.model);
                    s1.go_to_spaceship(s2); 
                    return true;
@@ -282,7 +332,30 @@ public class Main extends SimpleApplication
        return false; 
     }
     
+<<<<<<< HEAD
     
+=======
+    private void alien_fire()
+    {
+      //int indice = (int)(Math.random()*10);
+        Random random=new Random();
+        int indice=random.nextInt(10);
+       if(y_m[indice]!=-1)
+       {
+         for(int i=0; i<4; i++)
+         {
+           if(bulletofaliens[i].fire==false)
+           { 
+              bulletofaliens[i].model.setLocalTranslation(m[x_m[indice]][y_m[indice]].model.getLocalTranslation());
+              bulletofaliens[i].fire=true;
+              rootNode.attachChild(bulletofaliens[i].model);
+              i=5;
+              bullets++;
+           }
+         }
+       }
+    }
+>>>>>>> origin/new
     
 };
 

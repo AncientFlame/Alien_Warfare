@@ -13,6 +13,7 @@ public class Mob
     Material mat;
     Texture texture;
     boolean alive;
+    boolean isLast;
     
     Mob(AssetManager man)
     {
@@ -24,6 +25,7 @@ public class Mob
         //mat.setTexture("ColorMap",texture);
        model.setMaterial(mat);
        alive=true;
+       isLast=false;
     }
     float motion(float vel,float zeta)
     {

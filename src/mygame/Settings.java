@@ -1,6 +1,7 @@
 
 package mygame;
 
+
 import com.jme3.system.AppSettings;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javax.imageio.ImageIO;
 public final class Settings {
     public static AppSettings system = new AppSettings(true);
     private static String Title;
+   
     
     Settings() {
         
@@ -23,14 +25,16 @@ public final class Settings {
      * impostazioni di default
     */
     public void set_default_settings(){
-       
+      
         set_icon_image();
         Title = "Alien Warfare";
         system.setTitle(Title);
         system.setUseInput(true);
         system.setFrameRate(300);
         system.setStereo3D(false);
-        system.setSamples(8);
+  
+        system.setSettingsDialogImage("Interface/SplashScreen.jpg");
+        system.setSamples(0);
     }
     /**
      * imposta la risoluzione dello schermo
