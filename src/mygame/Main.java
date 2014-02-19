@@ -274,13 +274,40 @@ public class Main extends SimpleApplication
             {
                m[i][j].alive=false;
                if(m[i][j].isLast==true)
-               {   
-                 if(j<4)
-                 {
-                   m[i][j+1].isLast=true;
-                   y_m[i]=j+1;
-                 } else y_m[i]=-1;
+               {
+                  switch(j)
+                  {
+                      case 0: {
+                                if(m[i][j+1].alive==true)
+                                { m[i][j+1].isLast=true; y_m[i]=j+1; } else
+                                if(m[i][j+2].alive==true)
+                                { m[i][j+2].isLast=true; y_m[i]=j+2; } else
+                                if(m[i][j+3].alive=true)
+                                { m[i][j+3].isLast=true; y_m[i]=j+3; } else
+                                if(m[i][j+4].alive==true)
+                                { m[i][j+4].isLast=true; y_m[i]=j+4; }
+                              } break;  
+                      case 1: {
+                                if(m[i][j+1].alive==true)
+                                { m[i][j+1].isLast=true; y_m[i]=j+1; } else
+                                if(m[i][j+2].alive==true)
+                                { m[i][j+2].isLast=true; y_m[i]=j+2; } else
+                                if(m[i][j+3].alive==true)
+                                { m[i][j+3].isLast=true; y_m[i]=j+3; }
+                              } break;
+                      case 2: {
+                                if(m[i][j+1].alive==true)
+                                { m[i][j+1].isLast=true; y_m[i]=j+1; } else
+                                if(m[i][j+2].alive==true)
+                                { m[i][j+2].isLast=true; y_m[i]=j+2; }
+                              } break; 
+                      case 3: {
+                                if(m[i][j+1].alive==true)
+                                { m[i][j+1].isLast=true; y_m[i]=j+1; }
+                              } break;
+                  }
                }
+               m[i][j].isLast=false;
                rootNode.detachChild(m[i][j].model);
                bulletofship.fire=false;
                rootNode.detachChild(s1.model);
@@ -326,7 +353,7 @@ public class Main extends SimpleApplication
       //int indice = (int)(Math.random()*10);
         Random random=new Random();
         int indice=random.nextInt(10);
-       if(y_m[indice]!=-1)
+       if(m[x_m[indice]][y_m[indice]].isLast==true)
        {
          for(int i=0; i<4; i++)
          {
@@ -336,7 +363,7 @@ public class Main extends SimpleApplication
               bulletofaliens[i].fire=true;
               rootNode.attachChild(bulletofaliens[i].model);
               i=5;
-              bullets++;
+              bullets++;             
            }
          }
        }
