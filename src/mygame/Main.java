@@ -56,7 +56,7 @@ public class Main extends SimpleApplication
       bulletofaliens[1]=new Bullet(assetManager,true); 
       bulletofaliens[2]=new Bullet(assetManager,true); 
       bulletofaliens[3]=new Bullet(assetManager,true); 
-      inizialize_spaceship(-10.0f,0.0f,-3f);
+      inizialize_spaceship(-10.0f,-0.5f,-3f);
       init_walls(0);
       initKeys();
       init_audio();
@@ -84,7 +84,7 @@ public class Main extends SimpleApplication
            if(bulletofaliens[ii].fire==true)  
            {  
               bulletofaliens[ii].fire=fire(bulletofaliens[ii]);  
-              collisions_with_walls(bulletofaliens[ii],spaceship);
+              if(collisions_with_walls(bulletofaliens[ii],spaceship)==false) collision_with_spaceship(bulletofaliens[ii],spaceship);
            }
          }
        }
@@ -246,7 +246,7 @@ public class Main extends SimpleApplication
               mob_vel=m[i][j].motion(mob_vel,zeta_mob+(6*j));
               if(vel_app!=mob_vel) //sbattuto contro il muro
                  zeta_mob-=1;
-              if(zeta_mob+6*j<=2.0f)
+              if(zeta_mob+6*j<=0.0f)
                 this.stop();
             }
           }
@@ -346,8 +346,24 @@ public class Main extends SimpleApplication
                }
              }
           }
+
        }
        return false; 
+    }
+    
+    private void collision_with_spaceship(Bullet s1,Spaceship s2)
+    {
+        collision=new CollisionResults();
+        s1.model.collideWith(s2.model.getWorldBound(), collision);
+        if(collision.size()>0)
+        {
+           s2.lifes-=1;
+           rootNode.detachChild(s1.model);
+           s1.fire=false;
+           bullets--;
+            if(s2.lifes<0) {
+              s2.alive=false; this.stop(); }
+        }
     }
     
     private void alien_fire()

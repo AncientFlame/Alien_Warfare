@@ -12,6 +12,7 @@ public class Spaceship {
     Texture texture;
     boolean alive;
     float vel;
+    int lifes;
     Spaceship(AssetManager man)
     {
        model=man.loadModel("Models/spaceship/spaceship.j3o");
@@ -23,5 +24,6 @@ public class Spaceship {
        model.setMaterial(mat);
        vel=0.03f; 
        alive=true;
+       lifes=3;
     }
 }
