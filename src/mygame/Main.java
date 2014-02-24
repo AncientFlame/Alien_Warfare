@@ -3,6 +3,7 @@ package mygame;
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
+import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
@@ -28,8 +29,9 @@ public class Main extends SimpleApplication
     float mob_vel,zeta_mob=24;
     CollisionResults collision;
     boolean first_person=false;
-    boolean pressed=false;
+    boolean pause=false;
     int ii;
+    BitmapText pause_imm;
 
 
     public static void main(String[] args)
@@ -51,24 +53,29 @@ public class Main extends SimpleApplication
       //flyCam.setMoveSpeed(15.0f);
       flyCam.setEnabled(false);
       
+      pause_imm=new BitmapText(guiFont, false);
       bulletofship=new Bullet(assetManager,false);
       bulletofaliens[0]=new Bullet(assetManager,true); 
       bulletofaliens[1]=new Bullet(assetManager,true); 
       bulletofaliens[2]=new Bullet(assetManager,true); 
       bulletofaliens[3]=new Bullet(assetManager,true); 
       inizialize_spaceship(-10.0f,-0.5f,-3f);
+      spaceship.lifes_imm=new BitmapText(guiFont, false);
       init_walls(0);
       initKeys();
       init_audio();
       init_light();
       init_sky();
       init_aliens();
+      guiNode.attachChild(spaceship.lifes_imm);
     }
 
     @Override
     public void simpleUpdate(float tpf) 
     {
-       set_camera();
+      if(pause==false)
+      {
+       set_camera(); 
        move_aliens();
        bulletofship.fire=fire(bulletofship);
        if(bulletofship.fire==true)
@@ -87,10 +94,12 @@ public class Main extends SimpleApplication
               if(collisions_with_walls(bulletofaliens[ii],spaceship)==false) collision_with_spaceship(bulletofaliens[ii],spaceship);
            }
          }
-       }
-       
-       listener.setLocation(cam.getLocation());
-       listener.setRotation(cam.getRotation());
+       }   
+       spaceship.print_lifes();
+      } else 
+           {
+               draw_pause();
+           }
     }
 
     @Override
@@ -112,27 +121,30 @@ public class Main extends SimpleApplication
       inputManager.addMapping("D", new KeyTrigger( KeyInput.KEY_D));
       inputManager.addMapping("fire", new KeyTrigger(KeyInput.KEY_SPACE));
       inputManager.addMapping("visuale",new KeyTrigger(KeyInput.KEY_T));
+      inputManager.addMapping("pause",new KeyTrigger(KeyInput.KEY_P));
       inputManager.addListener(spaceship_keys,"A","D","fire");
-      inputManager.addListener(camera_keys,"visuale");
+      inputManager.addListener(camera_keys,"visuale","pause");
     }
     private ActionListener camera_keys=new ActionListener()
     {
         public void onAction(String name, boolean isPressed, float tpf) 
         {
              if(name.equals("visuale") && !isPressed)
-             {
-               if(pressed==false)
-               {
                 first_person=!first_person; 
-                pressed=true;
-               }
-             } else pressed=false;  
+             if(name.equals("pause") && !isPressed)
+             {
+                pause=!pause;
+                delete_pause();
+             }
+             
         }
     };
     private AnalogListener spaceship_keys = new AnalogListener() 
     {
        public void onAnalog(String name, float value, float tpf) 
        {
+           if(pause==false)
+           {
              if(name.equals("D"))
              {
                Vector3f v = spaceship.model.getLocalTranslation();
@@ -155,6 +167,7 @@ public class Main extends SimpleApplication
                 } 
                 
              }
+           }
       }
     };
     
@@ -172,7 +185,7 @@ public class Main extends SimpleApplication
       {
         walls[num_wall].models[ite]=assetManager.loadModel("Models/cubo_base/cubo.j3o");
         walls[num_wall].broken[ite]=false;
-        walls[num_wall].texture.setAnisotropicFilter(8);
+        //walls[num_wall].texture.setAnisotropicFilter(8);
         walls[num_wall].models[ite].setMaterial(walls[num_wall].mat);
         
         switch(ite)
@@ -357,15 +370,15 @@ public class Main extends SimpleApplication
         s1.model.collideWith(s2.model.getWorldBound(), collision);
         if(collision.size()>0)
         {
-           s2.lifes-=1;
+           s2.lifes-=1;  
            rootNode.detachChild(s1.model);
            s1.fire=false;
            bullets--;
             if(s2.lifes<0) {
               s2.alive=false; this.stop(); }
-        }
+           }
     }
-    
+         
     private void alien_fire()
     {
       //int indice = (int)(Math.random()*10);
@@ -385,6 +398,19 @@ public class Main extends SimpleApplication
            }
          }
        }
+    }
+    
+    private void draw_pause()
+    {           
+       pause_imm.setSize(50);
+       pause_imm.setColor(ColorRGBA.Blue);                             
+       pause_imm.setText("P to unpause");         
+       pause_imm.setLocalTranslation(180,350,0); 
+       guiNode.attachChild(pause_imm); 
+    }
+    private void delete_pause()
+    {
+      guiNode.detachChild(pause_imm);
     }
     
 };
