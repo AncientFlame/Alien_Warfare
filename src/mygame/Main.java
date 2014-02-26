@@ -82,7 +82,7 @@ public class Main extends SimpleApplication
        { 
          if(collisions_with_walls(bulletofship,spaceship)==false) collisions_with_aliens(bulletofship,spaceship);
        }
-       if(bullets<3)
+       if(bullets<2)
           alien_fire();
        if(bullets>0)
        { 
