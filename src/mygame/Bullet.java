@@ -26,7 +26,7 @@ public class Bullet
        model.setMaterial(mat);
        fire=false;
        alien=b;
-       if(b==false) vel=0.1f; else vel=-0.1f;
+       if(b==false) vel=0.5f; else vel=-0.5f;
     }
     void go_to_spaceship(Spaceship sp)
     {
@@ -36,7 +36,7 @@ public class Bullet
     {
        Vector3f v=model.getLocalTranslation();
        model.setLocalTranslation(v.x,v.y,v.z+vel);
-       if( (v.z>40 && alien==false) || (v.z<-6 && alien==true) ) //40 = dopo ultima linea di mob all'inizio del gioco
+       if( (v.z>50 && alien==false) || (v.z<-6 && alien==true) ) //40 = dopo ultima linea di mob all'inizio del gioco
        {
            return false;
        }

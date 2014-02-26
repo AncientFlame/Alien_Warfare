@@ -30,7 +30,7 @@ public final class Settings {
         Title = "Alien Warfare";
         system.setTitle(Title);
         system.setUseInput(true);
-        system.setFrameRate(300);
+        system.setFrameRate(60);
         system.setStereo3D(false);
   
         system.setSettingsDialogImage("Interface/SplashScreen.jpg");

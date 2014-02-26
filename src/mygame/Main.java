@@ -185,7 +185,7 @@ public class Main extends SimpleApplication
       {
         walls[num_wall].models[ite]=assetManager.loadModel("Models/cubo_base/cubo.j3o");
         walls[num_wall].broken[ite]=false;
-        //walls[num_wall].texture.setAnisotropicFilter(8);
+        walls[num_wall].texture.setAnisotropicFilter(8);
         walls[num_wall].models[ite].setMaterial(walls[num_wall].mat);
         
         switch(ite)
@@ -224,8 +224,8 @@ public class Main extends SimpleApplication
     }
     private void init_aliens()
     {
-      //mob_vel=-0.005f;
-        mob_vel=-0.01f;
+        //mob_vel=-0.005f;
+        mob_vel=-0.04f;
       for(int linea=0; linea<11; linea++) 
       {
         for(int colonna=0; colonna<5; colonna++) 
@@ -374,8 +374,10 @@ public class Main extends SimpleApplication
            rootNode.detachChild(s1.model);
            s1.fire=false;
            bullets--;
-            if(s2.lifes<0) {
-              s2.alive=false; this.stop(); }
+            if(s2.lifes<0) 
+            {
+              s2.alive=false; this.stop(); 
+            }
            }
     }
          

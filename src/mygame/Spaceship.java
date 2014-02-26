@@ -25,7 +25,7 @@ public class Spaceship {
         //texture=man.loadTexture("percorso");
         //mat.setTexture("ColorMap",texture);
        model.setMaterial(mat);
-       vel=0.03f; 
+       vel=0.15f; 
        alive=true;
        lifes=3;
     }
