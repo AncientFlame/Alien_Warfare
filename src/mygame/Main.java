@@ -24,14 +24,17 @@ public class Main extends SimpleApplication
     Mob m[][]=new Mob[11][5];
     int x_m[]=new int[11];
     int y_m[]=new int[11];
-    Bullet bulletofaliens[]=new Bullet[4];
+    Bullet bulletofaliens[]=new Bullet[2];
     int bullets=0;
     float mob_vel,zeta_mob=24;
     CollisionResults collision;
     boolean first_person=false;
     boolean pause=false;
+    boolean exit=false;
     int ii;
+    int n_mob=55;
     BitmapText pause_imm;
+    BitmapText won_imm;
 
 
     public static void main(String[] args)
@@ -54,11 +57,10 @@ public class Main extends SimpleApplication
       flyCam.setEnabled(false);
       
       pause_imm=new BitmapText(guiFont, false);
+      won_imm=new BitmapText(guiFont, false);
       bulletofship=new Bullet(assetManager,false);
       bulletofaliens[0]=new Bullet(assetManager,true); 
       bulletofaliens[1]=new Bullet(assetManager,true); 
-      bulletofaliens[2]=new Bullet(assetManager,true); 
-      bulletofaliens[3]=new Bullet(assetManager,true); 
       inizialize_spaceship(-10.0f,-0.5f,-3f);
       spaceship.lifes_imm=new BitmapText(guiFont, false);
       init_walls(0);
@@ -73,8 +75,10 @@ public class Main extends SimpleApplication
     @Override
     public void simpleUpdate(float tpf) 
     {
-      if(pause==false)
+      if(pause==false && (n_mob>0 || bulletofaliens[0].fire || bulletofaliens[1].fire))
       {
+         if(exit)
+           this.stop();
        set_camera(); 
        move_aliens();
        bulletofship.fire=fire(bulletofship);
@@ -86,7 +90,7 @@ public class Main extends SimpleApplication
           alien_fire();
        if(bullets>0)
        { 
-         for(ii=0; ii<4; ii++)
+         for(ii=0; ii<2; ii++)
          {
            if(bulletofaliens[ii].fire==true)  
            {  
@@ -96,10 +100,9 @@ public class Main extends SimpleApplication
          }
        }   
        spaceship.print_lifes();
-      } else 
-           {
-               draw_pause();
-           }
+      } else
+          if(n_mob==0)
+          { won(); n_mob=-1; }  
     }
 
     @Override
@@ -122,8 +125,9 @@ public class Main extends SimpleApplication
       inputManager.addMapping("fire", new KeyTrigger(KeyInput.KEY_SPACE));
       inputManager.addMapping("visuale",new KeyTrigger(KeyInput.KEY_T));
       inputManager.addMapping("pause",new KeyTrigger(KeyInput.KEY_P));
+      inputManager.addMapping("won",new KeyTrigger(KeyInput.KEY_ESCAPE));
       inputManager.addListener(spaceship_keys,"A","D","fire");
-      inputManager.addListener(camera_keys,"visuale","pause");
+      inputManager.addListener(camera_keys,"visuale","pause","won");
     }
     private ActionListener camera_keys=new ActionListener()
     {
@@ -134,16 +138,21 @@ public class Main extends SimpleApplication
              if(name.equals("pause") && !isPressed)
              {
                 pause=!pause;
-                delete_pause();
+                if(!pause)
+                 delete_pause();
+                else
+                 draw_pause();
              }
-             
+             if(name.equals("won") && !isPressed)
+               if(n_mob==0)  
+                 exit=true;
         }
     };
     private AnalogListener spaceship_keys = new AnalogListener() 
     {
        public void onAnalog(String name, float value, float tpf) 
        {
-           if(pause==false)
+           if(pause==false && n_mob>0)
            {
              if(name.equals("D"))
              {
@@ -287,6 +296,7 @@ public class Main extends SimpleApplication
             if(collision.size()>0) //se è entrato in collisione
             {
                m[i][j].alive=false;
+               n_mob--;
                if(m[i][j].isLast==true)
                {
                   switch(j)
@@ -413,6 +423,17 @@ public class Main extends SimpleApplication
     private void delete_pause()
     {
       guiNode.detachChild(pause_imm);
+    }
+    private void won()
+    {
+       if(n_mob==0 && spaceship.alive==true)
+       {
+            won_imm.setSize(50);
+            won_imm.setColor(ColorRGBA.Yellow);                             
+            won_imm.setText("You won! Esc to exit");         
+            won_imm.setLocalTranslation(130,350,0); 
+            guiNode.attachChild(won_imm); 
+       }    
     }
     
 };
